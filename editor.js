@@ -1,19 +1,19 @@
 class Editor {
 
+    /**
+     * [constructor description]
+     * @param  {Object} options [description]
+     */
     constructor(options) {  
- 
-        this.templateName = !options.editorTemplateName ? this.templateName : 'default'; 
-        this.originalTemplateName = options.originalTemplateName;
-
-//      this.editorTemplate = '';
-
+        this.template = options.template; 
+        this.originalTemplate = options.originalTemplate;
         this.card = options.context;
         this.isEditing = false;
         this.data = options.data;
         this.element = options.element;
         this.textTemplate = '';
         this.id = options.id;
-        this.setTemplate();
+        this.setTemplate(options.template);
     }
 
 
@@ -22,9 +22,11 @@ class Editor {
 
     /**
      * [setTemplate description]
+     * @chainable
+     * @param {Function} template [description]
      */
-    setTemplate() {
-        this.template = editorTemplates[this.templateName];
+    setTemplate(template) {
+        this.template = template;
         return this;
     }
 
@@ -34,7 +36,7 @@ class Editor {
 
     /**
      * [getTemplate description]
-     * @return {[type]} [description]
+     * @return {String} [description]
      */
     getTemplate() {
         return this.template;
@@ -45,7 +47,7 @@ class Editor {
 
     /**
      * [renderTemplate description]
-     * @param  {[type]} data [description]
+     * @param  {} data [description]
      * @return {[type]}      [description]
      */
     renderTemplate(data) {
@@ -55,35 +57,18 @@ class Editor {
 
 
 
-
-    /**
-     * [createEditingElementFragment description]
-     * @param  {[type]} data [description]
-     * @return {[type]}      [description]
-     */
-    createEditingElementFragment(data) {
-        var fragment = document.createDocumentFragment('<' + data.replaceWith + ' />');
-            fragment.dataset = data;
-            fragment.placeholder = data.content;
-
-            var html = editorTemplates['formElement'](data);
-            return html;
-    }
-
-
-
-
-
     /**
      * [enterEditMode description]
+     * @chainable
      * @return {[type]} [description]
      */
     enterEditMode() {
         var form = this.renderTemplate(this.data);
         this.element.innerHTML = form;
-        this.element.children[0].innerHTML = this.createEditingElementFragment(this.data) + this.element.children[0].innerHTML;
+        this.element.children[0].innerHTML = this.renderDefaultTemplate(this.data) + this.element.children[0].innerHTML;
         this.addListeners();
         this.isEditing = true;
+        return this;
     }
 
 
@@ -96,8 +81,7 @@ class Editor {
      * @return {[type]}      [description]
      */
     renderDefaultTemplate(data) {
-        var template = templates[this.originalTemplateName];
-        return template(data);
+        return this.originalTemplate(data);
     }
 
 
@@ -106,7 +90,8 @@ class Editor {
 
     /**
      * [revert description]
-     * @return {[type]} [description]
+     * @chainable
+     * @return {Object} [description]
      */
     revert() {
 
@@ -121,13 +106,15 @@ class Editor {
 
     /**
      * [update description]
-     * @return {[type]} [description]
+     * @chainable
+     * @return {Object} [description]
      */
     update() {
         var form = this.element.getElementsByTagName('form')[0];
         this.data = ___.formatFormData(new FormData(this.element.getElementsByTagName('form')[0]));
         this.element.outerHTML = this.renderDefaultTemplate(this.data);
         events.emit('update', [], this.card);
+        return this;
     }
 
 
@@ -135,7 +122,8 @@ class Editor {
 
     /**
      * [delete description]
-     * @return {[type]} [description]
+     * @chainable
+     * @return {Object} [description]
      */
     delete() {
         var form = this.element.getElementsByTagName('form')[0];
@@ -146,14 +134,17 @@ class Editor {
         }
 
         this.element.outerHTML = this.renderDefaultTemplate(this.data);
-       // events.emit('update', [], this.card);
+        return this;
+
 
     }
 
 
 
-    /**
-     * [addListeners description]
+        /**
+         * [addListeners description]
+         * @
+     * @todo  move listeners to html
      */
     addListeners() {
         var buttons = Array.prototype.slice.call(this.element.getElementsByTagName('button'));
@@ -165,13 +156,14 @@ class Editor {
                 this['on' + data.action]();
             })
         }
+        return this;
     }
 
 
 
     /**
      * [onsave description]
-     * @return {[type]} [description]
+     * @return {Function} [description]
      */
     onsave() {
         return this.update()
@@ -198,4 +190,4 @@ class Editor {
     }
 
 
-    }
+}
