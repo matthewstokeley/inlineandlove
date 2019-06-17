@@ -1,7 +1,6 @@
 class Editor {
 
     constructor(options) {  
- 
         this.templateName = !options.editorTemplateName ? this.templateName : 'default'; 
         this.originalTemplateName = options.originalTemplateName;
         this.card = options.context;
@@ -75,12 +74,10 @@ class Editor {
     }
 
     /**
-     * [revert description]
-     * @return {[type]} [description]
+     * @chainable
+     * @return
      */
     revert() {
-
-
         this.element.outerHTML = this.renderDefaultTemplate(this.data);
        // events.emit('update', [], this.card);
         return this;
