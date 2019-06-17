@@ -4,9 +4,6 @@ class Editor {
  
         this.templateName = !options.editorTemplateName ? this.templateName : 'default'; 
         this.originalTemplateName = options.originalTemplateName;
-
-//      this.editorTemplate = '';
-
         this.card = options.context;
         this.isEditing = false;
         this.data = options.data;
@@ -15,11 +12,7 @@ class Editor {
         this.id = options.id;
         this.setTemplate();
     }
-
-
-
-
-
+    
     /**
      * [setTemplate description]
      */
@@ -28,10 +21,6 @@ class Editor {
         return this;
     }
 
-
-
-
-
     /**
      * [getTemplate description]
      * @return {[type]} [description]
@@ -39,10 +28,7 @@ class Editor {
     getTemplate() {
         return this.template;
     }
-
-
-
-
+    
     /**
      * [renderTemplate description]
      * @param  {[type]} data [description]
@@ -52,14 +38,10 @@ class Editor {
         return this.template(data);
     }
 
-
-
-
-
     /**
-     * [createEditingElementFragment description]
-     * @param  {[type]} data [description]
-     * @return {[type]}      [description]
+     * 
+     * @param  {Object} data
+     * @return {String}
      */
     createEditingElementFragment(data) {
         var fragment = document.createDocumentFragment('<' + data.replaceWith + ' />');
@@ -69,10 +51,6 @@ class Editor {
             var html = editorTemplates['formElement'](data);
             return html;
     }
-
-
-
-
 
     /**
      * [enterEditMode description]
@@ -86,10 +64,6 @@ class Editor {
         this.isEditing = true;
     }
 
-
-
-
-
     /**
      * [renderDefaultTemplate description]
      * @param  {[type]} data [description]
@@ -99,10 +73,6 @@ class Editor {
         var template = templates[this.originalTemplateName];
         return template(data);
     }
-
-
-
-
 
     /**
      * [revert description]
@@ -116,9 +86,6 @@ class Editor {
         return this;
     }
 
-
-
-
     /**
      * [update description]
      * @return {[type]} [description]
@@ -129,10 +96,7 @@ class Editor {
         this.element.outerHTML = this.renderDefaultTemplate(this.data);
         events.emit('update', [], this.card);
     }
-
-
-
-
+    
     /**
      * [delete description]
      * @return {[type]} [description]
@@ -149,9 +113,7 @@ class Editor {
        // events.emit('update', [], this.card);
 
     }
-
-
-
+    
     /**
      * [addListeners description]
      */
@@ -167,8 +129,6 @@ class Editor {
         }
     }
 
-
-
     /**
      * [onsave description]
      * @return {[type]} [description]
@@ -176,8 +136,6 @@ class Editor {
     onsave() {
         return this.update()
     }
-
-
 
     /**
      * [ondelete description]
@@ -187,8 +145,6 @@ class Editor {
         return this.delete()
     }
 
-
-
     /**
      * [oncancel description]
      * @return {[type]} [description]
@@ -197,5 +153,4 @@ class Editor {
        return  this.revert()
     }
 
-
-    }
+}
