@@ -1,6 +1,6 @@
 ### In-line and love
 
-"click to edit" template-based inline-editing.  still a private release. 
+"click to edit" template-based inline-editing. 
 
 0.0.4
 
